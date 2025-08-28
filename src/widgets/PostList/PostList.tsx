@@ -1,6 +1,6 @@
 import React from 'react'
-import PostCard from '../../entities/post/ui/PostCard/PostCard'
-import type { Post } from '../../entities/post/ui/PostCard/PostCard'
+import PostCard from '../../entities/post/ui/PostCard'
+import type { Post } from '../../entities/post/ui/PostCard'
 
 const mockPosts: Post[] = [
   {
@@ -41,7 +41,7 @@ const PostList: React.FC = () => {
       <div className="container">
         <h2>Последние посты</h2>
         <div className="posts-container">
-          {}
+          {/* Удален пустой тег {} */}
           {mockPosts.map((post) => (
             <React.Fragment key={post.id}>
               <PostCard post={post} />
