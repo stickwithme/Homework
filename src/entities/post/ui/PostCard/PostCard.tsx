@@ -1,4 +1,5 @@
 import React from 'react'
+import styles from './PostCard.module.css'
 
 export interface Post {
   id: number
@@ -13,10 +14,10 @@ interface PostCardProps {
 
 const PostCard: React.FC<PostCardProps> = ({ post }) => {
   return (
-    <article className="post-card">
-      <h3>{post.title}</h3>
-      <p>{post.body}</p>
-      <div className="post-meta">
+    <article className={styles.card}>
+      <h3 className={styles.title}>{post.title}</h3>
+      <p className={styles.body}>{post.body}</p>
+      <div className={styles.meta}>
         <span>User ID: {post.userId}</span>
       </div>
     </article>
