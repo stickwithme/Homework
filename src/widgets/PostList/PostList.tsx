@@ -1,6 +1,6 @@
 import React from 'react'
-import PostCard from '../../entities/post/ui/PostCard'
-import type { Post } from '../../entities/post/ui/PostCard'
+import PostCard from '../../entities/post/ui/PostCard/PostCard'
+import type { Post } from '../../entities/post/ui/PostCard/PostCard'
 
 const mockPosts: Post[] = [
   {
@@ -21,6 +21,18 @@ const mockPosts: Post[] = [
     body: 'Современные веб-приложения требуют продуманной архитектуры. Рассмотрим различные подходы к организации кода.',
     userId: 3,
   },
+  {
+    id: 4,
+    title: 'CSS Modules и стилизация компонентов',
+    body: 'CSS Modules позволяют изолировать стили компонентов и избежать конфликтов имен классов.',
+    userId: 1,
+  },
+  {
+    id: 5,
+    title: 'React Hooks: useState и useEffect',
+    body: 'Хуки позволяют использовать состояние и другие возможности React без написания классов.',
+    userId: 2,
+  },
 ]
 
 const PostList: React.FC = () => {
@@ -29,8 +41,11 @@ const PostList: React.FC = () => {
       <div className="container">
         <h2>Последние посты</h2>
         <div className="posts-container">
+          {}
           {mockPosts.map((post) => (
-            <PostCard key={post.id} post={post} />
+            <React.Fragment key={post.id}>
+              <PostCard post={post} />
+            </React.Fragment>
           ))}
         </div>
       </div>
