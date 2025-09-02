@@ -11,7 +11,7 @@ export const ThemeSwitcher: React.FC = () => {
       onClick={toggleTheme}
       aria-label="Переключить тему"
     >
-      <span className={styles.icon}>{theme === 'light' ? '🌙' : '☀️'}</span>
+      <span>{theme === 'light' ? '🌙' : '☀️'}</span>
       <span>{theme === 'light' ? 'Тёмная тема' : 'Светлая тема'}</span>
     </button>
   )

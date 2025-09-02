@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import type { ReactNode } from 'react'
-import { ThemeContext } from './ThemeContext'
 import type { Theme } from './ThemeContext'
+import { ThemeContext } from './ThemeContext'
 
 interface ThemeProviderProps {
-  children: ReactNode
+  children: React.ReactNode
 }
 
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
