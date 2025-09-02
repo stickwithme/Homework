@@ -1,12 +1,6 @@
 import React from 'react'
 import styles from './PostCard.module.css'
-
-export interface Post {
-  id: number
-  title: string
-  body: string
-  userId: number
-}
+import type { Post } from '../../model/types.ts'
 
 interface PostCardProps {
   post: Post

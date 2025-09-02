@@ -1,20 +1,17 @@
 import React, { useState, useEffect } from 'react'
-import type { ReactNode } from 'react'
-import { ThemeContext } from './ThemeContext'
 import type { Theme } from './ThemeContext'
+import { ThemeContext } from './ThemeContext'
 
 interface ThemeProviderProps {
-  children: ReactNode
+  children: React.ReactNode
 }
 
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   const [theme, setTheme] = useState<Theme>('light')
 
   useEffect(() => {
-    const savedTheme = localStorage.getItem('theme') as Theme | null
-    if (savedTheme) {
-      setTheme(savedTheme)
-    }
+    const saved = localStorage.getItem('theme') as Theme | null
+    if (saved) setTheme(saved)
   }, [])
 
   useEffect(() => {
@@ -23,7 +20,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   }, [theme])
 
   const toggleTheme = () => {
-    setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'))
+    setTheme((prev) => (prev === 'light' ? 'dark' : 'light'))
   }
 
   return (
