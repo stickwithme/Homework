@@ -1,6 +1,6 @@
 import React from 'react'
 import styles from './PostCard.module.css'
-import type { Post } from '../../post/model/types'
+import type { Post } from '../../model/types.ts'
 
 interface PostCardProps {
   post: Post
