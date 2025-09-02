@@ -1,8 +1,9 @@
 import React from 'react'
 import PostCard from '../../entities/post/ui/PostCard'
 import type { Post } from '../../entities/post/ui/PostCard'
+import { mockPosts } from '../../lib/mocks/posts.mock'
 
-const mockPosts: Post[] = [
+const __deprecatedLocalMockPosts: Post[] = [
   {
     id: 1,
     title: 'Введение в React',
@@ -43,9 +44,7 @@ const PostList: React.FC = () => {
         <div className="posts-container">
           {/* Удален пустой тег {} */}
           {mockPosts.map((post) => (
-            <React.Fragment key={post.id}>
-              <PostCard post={post} />
-            </React.Fragment>
+            <PostCard key={post.id} post={post} />
           ))}
         </div>
       </div>
