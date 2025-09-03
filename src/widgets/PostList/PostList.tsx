@@ -1,8 +1,8 @@
-import React from 'react'
+import type { FC } from 'react'
 import PostCard from '../../entities/post/ui/PostCard/PostCard'
 import { mockPosts } from '../../lib/mocks/posts.mock'
 
-const PostList: React.FC = () => {
+const PostList: FC = () => {
   return (
     <div className="post-list">
       <div className="container">
