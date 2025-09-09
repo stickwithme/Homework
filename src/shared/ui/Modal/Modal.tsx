@@ -1,69 +1,53 @@
-import React, { useEffect } from 'react'
-import ReactDOM from 'react-dom'
-import styles from './Modal.module.css'
+import React, { useEffect, useRef } from "react"
+import type { ReactNode } from "react"
+import "./Modal.css"
+
 
 interface ModalProps {
-  isOpen: boolean
-  onClose: () => void
-  title: string
-  children: React.ReactNode
+  isOpen: boolean;
+  onClose: () => void;
+  children: ReactNode;
 }
 
-export const Modal: React.FC<ModalProps> = ({
-  isOpen,
-  onClose,
-  title,
-  children,
-}) => {
+export const Modal = ({ isOpen, onClose, children }: ModalProps) => {
+  const contentRef = useRef<HTMLDivElement | null>(null);
+
   useEffect(() => {
-    const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        onClose()
-      }
-    }
+    if (!isOpen) return;
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    document.addEventListener("keydown", handleKey);
+    // простейший автофокус внутрь
+    contentRef.current?.focus();
+    return () => document.removeEventListener("keydown", handleKey);
+  }, [isOpen, onClose]);
 
-    if (isOpen) {
-      document.addEventListener('keydown', handleEscape)
-      document.body.style.overflow = 'hidden'
-    }
+  if (!isOpen) return null;
 
-    return () => {
-      document.removeEventListener('keydown', handleEscape)
-      document.body.style.overflow = 'unset'
-    }
-  }, [isOpen, onClose])
-
-  if (!isOpen) return null
-
-  const handleOverlayClick = (event: React.MouseEvent) => {
-    if (event.target === event.currentTarget) {
-      onClose()
-    }
-  }
-
-  return ReactDOM.createPortal(
-    <div className={styles.overlay} onClick={handleOverlayClick}>
+  return (
+    <div className="modal-overlay" role="dialog" aria-modal="true" onClick={onClose}>
       <div
-        className={styles.modal}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="modal-title"
+        className="modal-content"
+        ref={contentRef}
+        tabIndex={-1}
+        onClick={(e) => e.stopPropagation()}
       >
-        <div className={styles.header}>
-          <h2 id="modal-title" className={styles.title}>
-            {title}
-          </h2>
-          <button
-            className={styles.closeButton}
-            onClick={onClose}
-            aria-label="Закрыть"
-          >
-            ×
-          </button>
-        </div>
-        <div className={styles.body}>{children}</div>
+        <button className="modal-close" aria-label="Закрыть" onClick={onClose}>✕</button>
+        {children}
       </div>
-    </div>,
-    document.body
-  )
-}
+    </div>
+  );
+};
+
+export const ModalHeader = ({ children }: { children: ReactNode }) => (
+  <div className="modal-header">{children}</div>
+);
+
+export const ModalBody = ({ children }: { children: ReactNode }) => (
+  <div className="modal-body">{children}</div>
+);
+
+export const ModalFooter = ({ children }: { children: ReactNode }) => (
+  <div className="modal-footer">{children}</div>
+);

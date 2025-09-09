@@ -1,14 +1,14 @@
 import React from 'react'
 import Header from '../../widgets/LayoutHeader/Header'
 import Footer from '../../widgets/LayoutFooter/Footer'
-import PostList from '../../widgets/PostList/PostList'
+import { Outlet } from 'react-router-dom'
 
 const MainLayout: React.FC = () => {
   return (
     <div className="app">
       <Header />
       <main className="main-content">
-        <PostList />
+        <Outlet />
       </main>
       <Footer />
     </div>
