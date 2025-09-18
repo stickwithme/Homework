@@ -1,6 +1,5 @@
 import type { FC, ChangeEvent } from 'react'
 import styles from './PostLengthFilter.module.css'
-import { mockPosts } from '../../../lib/mocks/posts.mock'
 
 interface PostLengthFilterProps {
   minLength: number
@@ -15,42 +14,30 @@ export const PostLengthFilter: FC<PostLengthFilterProps> = ({ minLength, setMinL
   }
 
   const onRangeChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setMinLength(e.currentTarget.valueAsNumber || 0)
+    const v = e.currentTarget.valueAsNumber
+    setMinLength(Number.isNaN(v) ? 0 : v)
   }
 
-  const maxTitleLength = mockPosts.reduce((max, post) => Math.max(max, post.title.length), 0)
-  const maxValue = Math.max(1000, maxTitleLength) // большое значение, чтобы не ограничивать
-
-  const rangeFill = maxValue > 0 ? Math.min(100, (minLength / maxValue) * 100) : 0
-  const rangeStyle = {
-    background: `linear-gradient(90deg, #5b9cff 0%, #5b9cff ${rangeFill}%, rgba(0,0,0,0.12) ${rangeFill}%)`
-  } as React.CSSProperties
-
   return (
-    <div className={styles.filter} aria-label="Фильтр по длине заголовка">
-      <div className={styles.row}>
-        <span className={styles.label}>Минимальная длина заголовка</span>
+    <div className={styles.wrapper}>
+      <label className={styles.label}>Минимальная длина заголовка:</label>
+      <div className={styles.controls}>
         <input
-          className={styles.numberInput}
           type="number"
           min={0}
-          step={1}
-          inputMode="numeric"
-          value={String(minLength)}
+          value={minLength}
           onChange={onNumberChange}
-          aria-label="Минимальная длина заголовка, число"
+          className={styles.number}
+          aria-label="Число минимальной длины заголовка"
         />
-      </div>
-
-      <div className={styles.rangeWrap}>
         <input
-          className={styles.range}
           type="range"
           min={0}
-                    step={1}
-          value={Math.max(0, minLength)}
+          max={100}
+          step={1}
+          value={Math.min(100, Math.max(0, minLength))}
           onChange={onRangeChange}
-          style={rangeStyle}
+          className={styles.range}
           aria-label="Ползунок минимальной длины заголовка"
         />
         <span className={styles.hint}>{minLength}</span>

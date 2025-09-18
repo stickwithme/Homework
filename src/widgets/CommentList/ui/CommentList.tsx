@@ -1,53 +1,37 @@
 import type { FC } from 'react'
 import { useState, useCallback, memo } from 'react'
-import styles from './CommentList.module.css'
 
-interface Comment {
+export interface Comment {
   id: number
   text: string
 }
 
 interface CommentListProps {
   comments: Comment[]
-  title?: string
 }
 
-const CommentList: FC<CommentListProps> = ({ comments, title = 'Комментарии' }) => {
-  const [collapsed, setCollapsed] = useState<boolean>(false)
+const CommentListBase: FC<CommentListProps> = ({ comments }) => {
+  const [collapsed, setCollapsed] = useState<boolean>(true)
 
   const toggleComments = useCallback(() => {
-    setCollapsed((prev) => !prev)
+    setCollapsed((c) => !c)
   }, [])
 
   return (
-    <section className={styles.wrapper} aria-label="Список комментариев">
-      <div className={styles.header}>
-        <span className={styles.title}>{title} ({comments.length})</span>
-        <button
-          type="button"
-          className={`${styles.toggle} btn`}
-          onClick={toggleComments}
-          aria-expanded={!collapsed}
-          aria-controls="comments-content"
-        >
-          {collapsed ? 'Показать' : 'Свернуть'}
-        </button>
-      </div>
+    <div>
+      <button onClick={toggleComments}>
+        {collapsed ? 'Показать комментарии' : 'Свернуть комментарии'}
+      </button>
 
-      <div
-        id="comments-content"
-        className={[styles.collapse, collapsed ? styles.hidden : ''].join(' ')}
-      >
-        <ul className={styles.list + ' ' + styles.inner}>
+      {!collapsed && (
+        <ul>
           {comments.map((comment) => (
-            <li key={comment.id} className={styles.item}>
-              {comment.text}
-            </li>
+            <li key={comment.id}>{comment.text}</li>
           ))}
         </ul>
-      </div>
-    </section>
+      )}
+    </div>
   )
 }
 
-export default memo(CommentList)
+export const CommentList = memo(CommentListBase)

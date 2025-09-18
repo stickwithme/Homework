@@ -1,85 +1,71 @@
 import type { FC } from 'react'
 import { useMemo, useState, useCallback } from 'react'
-import PostCard from '../../entities/post/ui/PostCard/PostCard'
+import { PostCard } from '../../entities/post/ui/PostCard/PostCard'
 import type { Post } from '../../entities/post/model/types'
+import { mockPosts } from '../../lib/mocks/posts.mock'
 import { withLoading } from '../../shared/lib/hoc/withLoading'
 import { PostLengthFilter } from '../../features/PostLengthFilter/ui/PostLengthFilter'
 import { filterByLength } from '../../features/PostLengthFilter/lib/filterByLength'
-import {
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-} from '../../shared/ui/Modal/Modal'
-import { usePosts } from '../../features/PostList/model/hooks/usePosts'
-import { Link } from 'react-router-dom'
+import { Modal, ModalHeader, ModalBody, ModalFooter } from '../../shared/ui/Modal/Modal'
+import { Button } from '../../shared/ui/Button/Button'
+import { CommentList, type Comment } from '../../widgets/CommentList/ui/CommentList'
 
-const PostList: FC<{ isLoading?: boolean; userId?: number }> = ({ userId }) => {
-  const { posts, loading } = usePosts({ userId })
-
+const PostListBase: FC<{ isLoading?: boolean }> = () => {
   // длина заголовка
   const [minLength, setMinLength] = useState<number>(0)
   // модалка: выбранный пост
   const [selected, setSelected] = useState<Post | null>(null)
 
-  // мемоизированный список постов после фильтра
-  const filteredPosts = useMemo(() => {
-    return filterByLength(posts, minLength)
-  }, [posts, minLength])
+  const onFilterChange = useCallback((value: number) => setMinLength(value), [])
 
-  // колбэки
-  const handleCardClick = useCallback((post: Post) => {
+  const openModal = useCallback((post: Post) => {
     setSelected(post)
   }, [])
 
   const closeModal = useCallback(() => setSelected(null), [])
 
+  const filtered = useMemo<Post[]>(() => {
+    return filterByLength(mockPosts, minLength)
+  }, [minLength])
+
+  // примитивные комментарии по id поста (имитация)
+  const commentsForSelected: Comment[] = useMemo(() => {
+    if (!selected) return []
+    return [
+      { id: 1, text: `Комментарий к посту #${selected.id}: спасибо!` },
+      { id: 2, text: `Полезно про: ${selected.title.slice(0, 10)}...` },
+    ]
+  }, [selected])
+
   return (
-    <div className="post-list">
-      <div className="container">
-        <div className="posts-wrap">
-          <h2>Последние посты</h2>
+    <div>
+      <PostLengthFilter minLength={minLength} setMinLength={onFilterChange} />
 
-          <PostLengthFilter minLength={minLength} setMinLength={setMinLength} />
-
-          <div className="posts-container">
-            {filteredPosts.map((post) => (
-              <div
-                key={post.id}
-                onClick={() => handleCardClick(post)}
-                style={{ cursor: 'pointer' }}
-              >
-                <Link
-                  to={`/posts/${post.id}`}
-                  style={{ textDecoration: 'none', color: 'inherit' }}
-                >
-                  <PostCard post={post} />
-                </Link>
-              </div>
-            ))}
-            {!loading && filteredPosts.length === 0 && (
-              <p>Нет постов с такой длиной заголовка.</p>
-            )}
+      <section id="posts" className="posts-container">
+        {filtered.map((post) => (
+          <div key={post.id} style={{ marginBottom: 16 }}>
+            <PostCard post={post} />
+            <div style={{ marginTop: 8 }}>
+              <Button onClick={() => openModal(post)}>Подробнее</Button>
+            </div>
           </div>
-        </div>
-      </div>
+        ))}
+      </section>
 
       <Modal isOpen={!!selected} onClose={closeModal}>
         <ModalHeader>{selected?.title}</ModalHeader>
         <ModalBody>
           <p>{selected?.body}</p>
-          <p style={{ fontSize: 12, opacity: 0.7 }}>
-            Автор: {selected?.userId}
-          </p>
+          <p style={{ fontSize: 12, opacity: 0.7 }}>Автор: {selected?.userId}</p>
+          <hr />
+          <CommentList comments={commentsForSelected} />
         </ModalBody>
         <ModalFooter>
-          <button className="btn" onClick={closeModal}>
-            Закрыть
-          </button>
+          <Button onClick={closeModal}>Закрыть</Button>
         </ModalFooter>
       </Modal>
     </div>
   )
 }
 
-export default withLoading(PostList)
+export default withLoading(PostListBase)

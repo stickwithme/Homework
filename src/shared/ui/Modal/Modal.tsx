@@ -1,7 +1,5 @@
-import React, { useEffect, useRef } from "react"
-import type { ReactNode } from "react"
-import "./Modal.css"
-
+import type { ReactNode, MouseEvent } from "react";
+import styles from "./Modal.module.css";
 
 interface ModalProps {
   isOpen: boolean;
@@ -10,30 +8,16 @@ interface ModalProps {
 }
 
 export const Modal = ({ isOpen, onClose, children }: ModalProps) => {
-  const contentRef = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    if (!isOpen) return;
-    const handleKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
-    document.addEventListener("keydown", handleKey);
-    // простейший автофокус внутрь
-    contentRef.current?.focus();
-    return () => document.removeEventListener("keydown", handleKey);
-  }, [isOpen, onClose]);
-
   if (!isOpen) return null;
 
+  const onOverlayClick = () => onClose();
+  const onContentClick = (e: MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+  };
+
   return (
-    <div className="modal-overlay" role="dialog" aria-modal="true" onClick={onClose}>
-      <div
-        className="modal-content"
-        ref={contentRef}
-        tabIndex={-1}
-        onClick={(e) => e.stopPropagation()}
-      >
-        <button className="modal-close" aria-label="Закрыть" onClick={onClose}>✕</button>
+    <div className={styles.overlay} onClick={onOverlayClick} role="dialog" aria-modal="true">
+      <div className={styles.modal} onClick={onContentClick}>
         {children}
       </div>
     </div>
@@ -41,13 +25,13 @@ export const Modal = ({ isOpen, onClose, children }: ModalProps) => {
 };
 
 export const ModalHeader = ({ children }: { children: ReactNode }) => (
-  <div className="modal-header">{children}</div>
+  <div className={styles.header}>{children}</div>
 );
 
 export const ModalBody = ({ children }: { children: ReactNode }) => (
-  <div className="modal-body">{children}</div>
+  <div className={styles.body}>{children}</div>
 );
 
 export const ModalFooter = ({ children }: { children: ReactNode }) => (
-  <div className="modal-footer">{children}</div>
+  <div className={styles.footer}>{children}</div>
 );

@@ -1,0 +1,16 @@
+.list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+.item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border-color, #e5e7eb);
+  background: #fff;
+}
+.title { flex: 1; }
+.done { text-decoration: line-through; opacity: .7; }
