@@ -1,7 +1,7 @@
 import type { FC } from 'react'
 import { useState, useCallback, memo } from 'react'
 
-interface Comment {
+export interface Comment {
   id: number
   text: string
 }
@@ -10,11 +10,11 @@ interface CommentListProps {
   comments: Comment[]
 }
 
-const CommentList: FC<CommentListProps> = ({ comments }) => {
-  const [collapsed, setCollapsed] = useState<boolean>(false)
+const CommentListBase: FC<CommentListProps> = ({ comments }) => {
+  const [collapsed, setCollapsed] = useState<boolean>(true)
 
   const toggleComments = useCallback(() => {
-    setCollapsed((prev) => !prev)
+    setCollapsed((c) => !c)
   }, [])
 
   return (
@@ -34,4 +34,4 @@ const CommentList: FC<CommentListProps> = ({ comments }) => {
   )
 }
 
-export default memo(CommentList)
+export const CommentList = memo(CommentListBase)

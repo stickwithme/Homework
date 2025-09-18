@@ -12,30 +12,24 @@ const Header: React.FC = () => {
   const [open, setOpen] = useState(false)
 
   return (
-    <header className={styles.header}>
-      <div className={styles.container}>
-        <a className={styles.logo} href="#home" onClick={() => setOpen(false)}>
-          Мой Блог
-        </a>
+    <header className={`${styles.header} header`}>
+      <div className={`${styles.container} container`}>
+        <div className={styles.brand}>Мой Блог</div>
 
         <button
           className={styles.burger}
-          aria-label="Открыть меню"
           aria-expanded={open}
-          onClick={() => setOpen(v => !v)}
+          aria-label="Открыть меню"
+          onClick={() => setOpen((v) => !v)}
         >
-          <span />
-          <span />
-          <span />
+          ☰
         </button>
 
         <nav className={`${styles.nav} ${open ? styles.open : ''}`}>
-          <ul className={styles.navList}>
-            {links.map(l => (
+          <ul>
+            {links.map((l) => (
               <li key={l.href}>
-                <a href={l.href} className={styles.link} onClick={() => setOpen(false)}>
-                  {l.label}
-                </a>
+                <a href={l.href}>{l.label}</a>
               </li>
             ))}
           </ul>

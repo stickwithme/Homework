@@ -1,5 +1,5 @@
-import React, { ReactNode } from "react";
-import "./Modal.css";
+import type { ReactNode, MouseEvent } from "react";
+import styles from "./Modal.module.css";
 
 interface ModalProps {
   isOpen: boolean;
@@ -10,9 +10,14 @@ interface ModalProps {
 export const Modal = ({ isOpen, onClose, children }: ModalProps) => {
   if (!isOpen) return null;
 
+  const onOverlayClick = () => onClose();
+  const onContentClick = (e: MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+  };
+
   return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+    <div className={styles.overlay} onClick={onOverlayClick} role="dialog" aria-modal="true">
+      <div className={styles.modal} onClick={onContentClick}>
         {children}
       </div>
     </div>
@@ -20,13 +25,13 @@ export const Modal = ({ isOpen, onClose, children }: ModalProps) => {
 };
 
 export const ModalHeader = ({ children }: { children: ReactNode }) => (
-  <div className="modal-header">{children}</div>
+  <div className={styles.header}>{children}</div>
 );
 
 export const ModalBody = ({ children }: { children: ReactNode }) => (
-  <div className="modal-body">{children}</div>
+  <div className={styles.body}>{children}</div>
 );
 
 export const ModalFooter = ({ children }: { children: ReactNode }) => (
-  <div className="modal-footer">{children}</div>
+  <div className={styles.footer}>{children}</div>
 );
