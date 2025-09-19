@@ -1,0 +1,26 @@
+.wrapper {
+  display: flex;
+  gap: 8px;
+  margin: 12px 0 16px;
+}
+
+.input {
+  flex: 1;
+  padding: 10px 12px;
+  border: 1px solid var(--border-color, #dfe3e8);
+  border-radius: 8px;
+  outline: none;
+}
+
+.input:focus {
+  box-shadow: 0 0 0 3px var(--ring, rgba(37, 99, 235, .18));
+  border-color: var(--accent, #2563eb);
+}
+
+.button {
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color, #dfe3e8);
+  background: var(--button-bg, #f7f7f7);
+  cursor: pointer;
+}
