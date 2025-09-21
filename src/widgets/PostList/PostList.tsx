@@ -10,7 +10,9 @@ import '../../shared/styles/mobile.css'
 import { useGetCommentsByPostQuery } from '../../entities/comment/api/commentsApi'
 import { mockPosts } from '../../lib/mocks/posts.mock'
 
-const PostListBase: FC<{ isLoading?: boolean; userId?: number }> = ({ userId }) => {
+const PostListBase: FC<{ isLoading?: boolean; userId?: number }> = ({
+  userId,
+}) => {
   // длина заголовка
   const [minLength, setMinLength] = useState<number>(0)
   // поиск по заголовку
@@ -21,15 +23,17 @@ const PostListBase: FC<{ isLoading?: boolean; userId?: number }> = ({ userId }) 
   const onFilterChange = useCallback((value: number) => setMinLength(value), [])
   const onQueryChange = useCallback((value: string) => setQ(value), [])
   const toggleComments = useCallback((id: number) => {
-    setOpen(prev => ({ ...prev, [id]: !prev[id] }))
+    setOpen((prev) => ({ ...prev, [id]: !prev[id] }))
   }, [])
 
   const filtered = useMemo(() => {
-    const byUser = userId ? mockPosts.filter(p => p.userId === userId) : mockPosts
+    const byUser = userId
+      ? mockPosts.filter((p) => p.userId === userId)
+      : mockPosts
     const byLen = filterByLength(byUser, minLength)
     const s = q.trim().toLowerCase()
-    return s ? byLen.filter(p => p.title.toLowerCase().includes(s)) : byLen
-}, [userId, minLength, q])
+    return s ? byLen.filter((p) => p.title.toLowerCase().includes(s)) : byLen
+  }, [userId, minLength, q])
 
   return (
     <div className="container">
@@ -37,7 +41,14 @@ const PostListBase: FC<{ isLoading?: boolean; userId?: number }> = ({ userId }) 
         <PostLengthFilter minLength={minLength} setMinLength={onFilterChange} />
         {!userId && (
           <label style={{ marginLeft: 8 }}>
-            Поиск: <input value={q} onChange={(e) => onQueryChange((e.target as HTMLInputElement).value)} placeholder="по заголовку" />
+            Поиск:{' '}
+            <input
+              value={q}
+              onChange={(e) =>
+                onQueryChange((e.target as HTMLInputElement).value)
+              }
+              placeholder="по заголовку"
+            />
           </label>
         )}
       </div>
@@ -55,8 +66,14 @@ const PostListBase: FC<{ isLoading?: boolean; userId?: number }> = ({ userId }) 
               <div style={{ marginTop: 8 }}>
                 <CommentList
                   comments={[
-                    { id: 1, text: `Комментарий к посту #${post.id}: спасибо!` },
-                    { id: 2, text: `Полезно про: ${post.title.slice(0, 10)}...` },
+                    {
+                      id: 1,
+                      text: `Комментарий к посту #${post.id}: спасибо!`,
+                    },
+                    {
+                      id: 2,
+                      text: `Полезно про: ${post.title.slice(0, 10)}...`,
+                    },
                   ]}
                 />
               </div>
@@ -70,10 +87,11 @@ const PostListBase: FC<{ isLoading?: boolean; userId?: number }> = ({ userId }) 
 
 export default withLoading(PostListBase)
 
-
 // Обёртка для загрузки комментариев поста
 const CommentsWrapper: FC<{ postId: number }> = ({ postId }) => {
   const { data = [], isFetching } = useGetCommentsByPostQuery(postId)
   if (isFetching) return <p>Загрузка комментариев…</p>
-  return <CommentList comments={data.map(c => ({ id: c.id, text: c.body }))} />
+  return (
+    <CommentList comments={data.map((c) => ({ id: c.id, text: c.body }))} />
+  )
 }
