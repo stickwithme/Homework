@@ -9,7 +9,9 @@ import { ThemeProvider } from './shared/lib/theme/ThemeProvider'
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <ThemeProvider>
-      <Provider store={store}>\n    \1\n  </Provider>
+      <Provider store={store}>
+        <App />
+      </Provider>
     </ThemeProvider>
   </React.StrictMode>
 )

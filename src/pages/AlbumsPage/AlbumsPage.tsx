@@ -21,7 +21,8 @@ const AlbumsPage: FC = () => {
         onChange={(e) => setQ((e.target as HTMLInputElement).value)}
         style={{ margin: '8px 0' }}
       />
-      {isFetching && <p>Загрузка...</p>}\n      <ul>
+      {isFetching && <p>Загрузка...</p>}
+      <ul>
         {filtered.map(a => <li key={a.id}>#{a.userId} — {a.title}</li>)}
       </ul>
     </div>

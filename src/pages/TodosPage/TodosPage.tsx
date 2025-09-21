@@ -20,7 +20,8 @@ const TodosPage: FC = () => {
           style={{ width: 80 }}
         />
       </label>
-      {isFetching && <p>Загрузка...</p>}\n      <ul>
+      {isFetching && <p>Загрузка...</p>}
+      <ul>
         {filtered.map(t => (
           <li key={t.id}>
             #{t.userId}&nbsp;—&nbsp;{t.title}&nbsp;{t.completed ? '✓' : ''}

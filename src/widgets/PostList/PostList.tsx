@@ -1,17 +1,16 @@
 import type { FC } from 'react'
 import { useMemo, useState, useCallback } from 'react'
 import { PostCard } from '../../entities/post/ui/PostCard/PostCard'
-import type { Post } from '../../entities/post/model/types'
-import { useGetPostsQuery } from '../../entities/post/api/postsApi'
 import { withLoading } from '../../shared/lib/hoc/withLoading'
 import { PostLengthFilter } from '../../features/PostLengthFilter/ui/PostLengthFilter'
 import { filterByLength } from '../../features/PostLengthFilter/lib/filterByLength'
 import { Button } from '../../shared/ui/Button/Button'
 import { CommentList } from '../../widgets/CommentList/ui/CommentList'
 import '../../shared/styles/mobile.css'
+import { useGetCommentsByPostQuery } from '../../entities/comment/api/commentsApi'
+import { mockPosts } from '../../lib/mocks/posts.mock'
 
 const PostListBase: FC<{ isLoading?: boolean; userId?: number }> = ({ userId }) => {
-  const { data: posts = [], isFetching } = useGetPostsQuery(userId)
   // длина заголовка
   const [minLength, setMinLength] = useState<number>(0)
   // поиск по заголовку
@@ -30,7 +29,7 @@ const PostListBase: FC<{ isLoading?: boolean; userId?: number }> = ({ userId }) 
     const byLen = filterByLength(byUser, minLength)
     const s = q.trim().toLowerCase()
     return s ? byLen.filter(p => p.title.toLowerCase().includes(s)) : byLen
-  }, [userId, minLength, q])
+}, [userId, minLength, q])
 
   return (
     <div className="container">
@@ -43,8 +42,7 @@ const PostListBase: FC<{ isLoading?: boolean; userId?: number }> = ({ userId }) 
         )}
       </div>
 
-      {isFetching && <p>Загрузка...</p>}
-      <section id="posts" className="section">
+      <section id="mockPosts" className="section">
         {filtered.map((post) => (
           <div key={post.id} style={{ marginBottom: 16 }}>
             <PostCard post={post} />
