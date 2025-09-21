@@ -1,19 +1,16 @@
 import type { FC } from 'react'
-import { useParams } from 'react-router-dom'
-import PostList from '../../widgets/PostList/PostList'
+import { Outlet, useParams } from 'react-router-dom'
 import UserTabs from '../../widgets/UserTabs/UserTabs'
 
-
-const UserPostsPage: FC = () => {
+const UserPage: FC = () => {
   const { id } = useParams()
   const userId = Number(id) || 0
-  
   return (
     <div>
       <UserTabs userId={userId} />
-      <PostList userId={userId} />
+      <Outlet />
     </div>
   )
 }
 
-export default UserPostsPage
+export default UserPage

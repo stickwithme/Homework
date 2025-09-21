@@ -1,80 +1,38 @@
 .overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  position: fixed; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(0,0,0,.5);
   z-index: 1000;
   backdrop-filter: blur(2px);
 }
 
 .modal {
-  background: var(--modal-bg, white);
+  background: var(--modal-bg, #fff);
   border-radius: 8px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-  max-width: 500px;
-  width: 90%;
+  box-shadow: 0 4px 20px rgba(0,0,0,.3);
+  width: min(500px, 90vw);
   max-height: 80vh;
-  overflow: hidden;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 .header {
   padding: 16px 20px;
-  border-bottom: 1px solid var(--border-color, #eee);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.title {
-  margin: 0;
-  font-size: 18px;
   font-weight: 600;
-  color: var(--text-primary, #333);
-}
-
-.closeButton {
-  background: none;
-  border: none;
-  font-size: 20px;
-  cursor: pointer;
-  color: var(--text-secondary, #666);
-  padding: 0;
-  width: 30px;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  transition: background-color 0.2s;
-}
-
-.closeButton:hover {
-  background: var(--button-hover-bg, #f0f0f0);
+  border-bottom: 1px solid #eee;
+  flex-shrink: 0;
 }
 
 .body {
-  padding: 20px;
-  overflow-y: auto;
-  color: var(--text-primary, #333);
-  line-height: 1.6;
+  padding: 16px 20px;
+  overflow: auto;
+  flex: 1 1 auto;
 }
 
-.body p {
-  margin-bottom: 16px;
-}
-
-.body ul {
-  padding-left: 20px;
-  margin-bottom: 16px;
-}
-
-.body li {
-  margin-bottom: 8px;
+.footer {
+  padding: 12px 20px;
+  border-top: 1px solid #eee;
+  text-align: right;
+  flex-shrink: 0;
 }

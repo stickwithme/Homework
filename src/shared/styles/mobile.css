@@ -1,0 +1,40 @@
+
+/* Basic responsive container and spacing */
+.container {
+  width: min(920px, 100%);
+  margin-inline: auto;
+  padding: 12px;
+}
+
+.section {
+  display: grid;
+  gap: 12px;
+}
+
+@media (min-width: 640px) {
+  .container { padding: 16px; }
+  .section { gap: 16px; }
+}
+
+.filterBar {
+  position: sticky;
+  top: 56px; /* under header */
+  background: var(--app-bg, #f7f9fb);
+  z-index: 5;
+  padding: 8px 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+  border-bottom: 1px solid rgba(0,0,0,.06);
+}
+
+.filterBar input[type="text"],
+.filterBar input[type="search"],
+.filterBar input[type="number"],
+.filterBar input[type="range"] {
+  width: 100%;
+}
+
+@media (min-width: 640px) {
+  .filterBar { grid-template-columns: 240px 1fr; align-items: center; }
+}

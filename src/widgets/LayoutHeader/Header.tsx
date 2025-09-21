@@ -1,11 +1,13 @@
 import React, { useState } from 'react'
 import { ThemeSwitcher } from '../../features/ThemeSwitcher/ui/ThemeSwitcher'
 import styles from './Header.module.css'
+import { NavLink } from 'react-router-dom'
 
 const links = [
-  { href: '#home', label: 'Главная' },
-  { href: '#posts', label: 'Посты' },
-  { href: '#about', label: 'О нас' },
+  { href: '/posts', label: 'Посты' },
+  { href: '/users', label: 'Пользователи' },
+  { href: '/albums', label: 'Альбомы' },
+  { href: '/todos', label: 'Задачи' },
 ]
 
 const Header: React.FC = () => {
@@ -25,11 +27,11 @@ const Header: React.FC = () => {
           ☰
         </button>
 
-        <nav className={`${styles.nav} ${open ? styles.open : ''}`}>
+        <nav className={`${styles.nav} ${open ? styles.open : ''}`} data-open={open}>
           <ul>
             {links.map((l) => (
               <li key={l.href}>
-                <a href={l.href}>{l.label}</a>
+                <NavLink to={l.href}>{l.label}</NavLink>
               </li>
             ))}
           </ul>

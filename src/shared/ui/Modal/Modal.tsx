@@ -1,4 +1,4 @@
-import type { ReactNode, MouseEvent } from "react";
+import type { ReactNode, MouseEvent, FC } from "react";
 import styles from "./Modal.module.css";
 
 interface ModalProps {
@@ -7,16 +7,26 @@ interface ModalProps {
   children: ReactNode;
 }
 
-export const Modal = ({ isOpen, onClose, children }: ModalProps) => {
+type SectionProps = { children: ReactNode };
+
+const Header: FC<SectionProps> = ({ children }) => (
+  <div className={styles.header}>{children}</div>
+);
+const Body: FC<SectionProps> = ({ children }) => (
+  <div className={styles.body}>{children}</div>
+);
+const Footer: FC<SectionProps> = ({ children }) => (
+  <div className={styles.footer}>{children}</div>
+);
+
+const BaseModal: FC<ModalProps> = ({ isOpen, onClose, children }) => {
   if (!isOpen) return null;
 
   const onOverlayClick = () => onClose();
-  const onContentClick = (e: MouseEvent<HTMLDivElement>) => {
-    e.stopPropagation();
-  };
+  const onContentClick = (e: MouseEvent<HTMLDivElement>) => e.stopPropagation();
 
   return (
-    <div className={styles.overlay} onClick={onOverlayClick} role="dialog" aria-modal="true">
+    <div className={styles.overlay} onClick={onOverlayClick}>
       <div className={styles.modal} onClick={onContentClick}>
         {children}
       </div>
@@ -24,14 +34,13 @@ export const Modal = ({ isOpen, onClose, children }: ModalProps) => {
   );
 };
 
-export const ModalHeader = ({ children }: { children: ReactNode }) => (
-  <div className={styles.header}>{children}</div>
-);
+export const Modal = Object.assign(BaseModal, {
+  Header,
+  Body,
+  Footer,
+});
 
-export const ModalBody = ({ children }: { children: ReactNode }) => (
-  <div className={styles.body}>{children}</div>
-);
-
-export const ModalFooter = ({ children }: { children: ReactNode }) => (
-  <div className={styles.footer}>{children}</div>
-);
+// Обратная совместимость со старым API:
+export const ModalHeader = Header;
+export const ModalBody = Body;
+export const ModalFooter = Footer;

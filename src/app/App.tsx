@@ -1,8 +1,8 @@
 import React from 'react'
-import MainLayout from '../shared/layouts/MainLayout'
+import AppRouter from './providers/router/AppRouter'
 
 const App: React.FC = () => {
-  return <MainLayout />
+  return <AppRouter />
 }
 
 export default App
