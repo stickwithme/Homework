@@ -6,6 +6,7 @@ import { mockPosts } from '../../lib/mocks/posts.mock'
 import { withLoading } from '../../shared/lib/hoc/withLoading'
 import { PostLengthFilter } from '../../features/PostLengthFilter/ui/PostLengthFilter'
 import { filterByLength } from '../../features/PostLengthFilter/lib/filterByLength'
+
 import {
   Modal,
   ModalHeader,
@@ -19,8 +20,7 @@ import {
 } from '../../widgets/CommentList/ui/CommentList'
 
 const PostListBase: FC<{ isLoading?: boolean }> = () => {
-  const [minLength, setMinLength] = useState<number>(0)
-
+  const [minLength, setMinLength] = useState<number>(0) // длина заголовка (фильтр)
   const [selected, setSelected] = useState<Post | null>(null)
 
   const onFilterChange = useCallback((value: number) => setMinLength(value), [])
@@ -35,6 +35,7 @@ const PostListBase: FC<{ isLoading?: boolean }> = () => {
     return filterByLength(mockPosts, minLength)
   }, [minLength])
 
+  // примитивные комментарии по id поста (имитация)
   const commentsForSelected: Comment[] = useMemo(() => {
     if (!selected) return []
     return [
@@ -77,3 +78,4 @@ const PostListBase: FC<{ isLoading?: boolean }> = () => {
 }
 
 export default withLoading(PostListBase)
+
