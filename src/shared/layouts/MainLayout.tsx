@@ -8,7 +8,8 @@ const MainLayout: React.FC = () => {
 
   useEffect(() => {
     const t = setTimeout(() => setLoading(false), 800) // имитация загрузки
-    return () => clearTimeout(t)
+
+    return () => clearTimeout(t) // очистка таймера на размонтировании
   }, [])
 
   return (
@@ -23,3 +24,4 @@ const MainLayout: React.FC = () => {
 }
 
 export default MainLayout
+

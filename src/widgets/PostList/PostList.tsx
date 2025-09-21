@@ -6,14 +6,21 @@ import { mockPosts } from '../../lib/mocks/posts.mock'
 import { withLoading } from '../../shared/lib/hoc/withLoading'
 import { PostLengthFilter } from '../../features/PostLengthFilter/ui/PostLengthFilter'
 import { filterByLength } from '../../features/PostLengthFilter/lib/filterByLength'
-import { Modal, ModalHeader, ModalBody, ModalFooter } from '../../shared/ui/Modal/Modal'
+
+import {
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+} from '../../shared/ui/Modal/Modal'
 import { Button } from '../../shared/ui/Button/Button'
-import { CommentList, type Comment } from '../../widgets/CommentList/ui/CommentList'
+import {
+  CommentList,
+  type Comment,
+} from '../../widgets/CommentList/ui/CommentList'
 
 const PostListBase: FC<{ isLoading?: boolean }> = () => {
-  // длина заголовка
-  const [minLength, setMinLength] = useState<number>(0)
-  // модалка: выбранный пост
+  const [minLength, setMinLength] = useState<number>(0) // длина заголовка (фильтр)
   const [selected, setSelected] = useState<Post | null>(null)
 
   const onFilterChange = useCallback((value: number) => setMinLength(value), [])
@@ -56,7 +63,9 @@ const PostListBase: FC<{ isLoading?: boolean }> = () => {
         <ModalHeader>{selected?.title}</ModalHeader>
         <ModalBody>
           <p>{selected?.body}</p>
-          <p style={{ fontSize: 12, opacity: 0.7 }}>Автор: {selected?.userId}</p>
+          <p style={{ fontSize: 12, opacity: 0.7 }}>
+            Автор: {selected?.userId}
+          </p>
           <hr />
           <CommentList comments={commentsForSelected} />
         </ModalBody>
@@ -69,3 +78,4 @@ const PostListBase: FC<{ isLoading?: boolean }> = () => {
 }
 
 export default withLoading(PostListBase)
+
