@@ -3,7 +3,7 @@ import type { FC } from 'react'
 import { useMemo, useState } from 'react'
 import { mockAlbums } from '../../lib/mocks/albums.mock'
 
-const AlbumsPage: FC = () => {
+export const AlbumsPage: FC = () => {
   const [q, setQ] = useState('')
 
   const filtered = useMemo(() => {

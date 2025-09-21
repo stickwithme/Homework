@@ -1,16 +1,16 @@
-import type { FC } from 'react'
-import { useParams } from 'react-router-dom'
-import UserTabs from '../../widgets/UserTabs/UserTabs'
+import { FC, useMemo } from 'react';
+import { useParams } from 'react-router-dom';
+import { mockAlbums } from '../../lib/mocks/albums.mock';
+import { AlbumsList } from '../../widgets/AlbumsList/AlbumsList';
 
-const UserAlbumsPage: FC = () => {
-  const { id } = useParams()
-  const userId = Number(id) || 0
+export const UserAlbumsPage: FC = () => {
+  const { userId } = useParams();
+  const uid = Number(userId);
+  const albums = useMemo(() => mockAlbums.filter(a => a.userId === uid), [uid]);
   return (
-    <div>
-      <UserTabs userId={userId} />
-      <h2>Альбомы пользователя #{userId}</h2>
-    </div>
-  )
-}
-
-export default UserAlbumsPage
+    <section>
+      <h2>Albums of user #{uid}</h2>
+      <AlbumsList albums={albums} />
+    </section>
+  );
+};

@@ -3,7 +3,7 @@ import type { FC } from 'react'
 import { useMemo, useState } from 'react'
 import { mockTodos } from '../../lib/mocks/todos.mock'
 
-const TodosPage: FC = () => {
+export const TodosPage: FC = () => {
   const [user, setUser] = useState<number | ''>('')
   const filtered = useMemo(() => {
     return user ? mockTodos.filter(t => t.userId === user) : mockTodos

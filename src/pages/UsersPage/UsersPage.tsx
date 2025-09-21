@@ -3,7 +3,7 @@ import { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useUsers } from '../../features/Users/model/hooks/useUsers'
 
-const UsersPage: FC = () => {
+export const UsersPage: FC = () => {
   const { users, loading } = useUsers()
   const [q, setQ] = useState('')
   const navigate = useNavigate()
