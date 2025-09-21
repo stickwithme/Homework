@@ -2,7 +2,7 @@ import type { FC } from 'react'
 import styles from './PostCard.module.css'
 import type { Post } from '../../model/types'
 
-export const PostCard: FC<{ post: Post }> = ({ post }) => {
+export const PostCard: React.FC<{ post: Post; onClick?: React.MouseEventHandler<HTMLButtonElement> }> = ({ post }) => {
   const { title, body, userId } = post
   return (
     <article className={styles.card}>

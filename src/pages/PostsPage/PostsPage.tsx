@@ -1,10 +1,10 @@
 import type { FC } from 'react'
 import PostList from '../../widgets/PostList/PostList'
-
+import { usePosts } from '../../features/PostList/model/hooks/usePosts'
 
 const PostsPage: FC = () => {
-  
-  return <PostList />
+  const { loading } = usePosts()
+  return <PostList isLoading={loading} />
 }
 
 export default PostsPage

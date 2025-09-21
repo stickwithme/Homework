@@ -2,7 +2,7 @@ import type { FC } from 'react'
 import { useMemo, useState, useCallback } from 'react'
 import { PostCard } from '../../entities/post/ui/PostCard/PostCard'
 import type { Post } from '../../entities/post/model/types'
-import { useGetPostsQuery } from '../../entities/post/api/postsApi'
+import { mockPosts } from '../../lib/mocks/posts.mock'
 import { withLoading } from '../../shared/lib/hoc/withLoading'
 import { PostLengthFilter } from '../../features/PostLengthFilter/ui/PostLengthFilter'
 import { filterByLength } from '../../features/PostLengthFilter/lib/filterByLength'
@@ -11,7 +11,6 @@ import { CommentList } from '../../widgets/CommentList/ui/CommentList'
 import '../../shared/styles/mobile.css'
 
 const PostListBase: FC<{ isLoading?: boolean; userId?: number }> = ({ userId }) => {
-  const { data: posts = [], isFetching } = useGetPostsQuery(userId)
   // длина заголовка
   const [minLength, setMinLength] = useState<number>(0)
   // поиск по заголовку
@@ -43,7 +42,6 @@ const PostListBase: FC<{ isLoading?: boolean; userId?: number }> = ({ userId }) 
         )}
       </div>
 
-      {isFetching && <p>Загрузка...</p>}
       <section id="posts" className="section">
         {filtered.map((post) => (
           <div key={post.id} style={{ marginBottom: 16 }}>
@@ -71,11 +69,3 @@ const PostListBase: FC<{ isLoading?: boolean; userId?: number }> = ({ userId }) 
 }
 
 export default withLoading(PostListBase)
-
-
-// Обёртка для загрузки комментариев поста
-const CommentsWrapper: FC<{ postId: number }> = ({ postId }) => {
-  const { data = [], isFetching } = useGetCommentsByPostQuery(postId)
-  if (isFetching) return <p>Загрузка комментариев…</p>
-  return <CommentList comments={data.map(c => ({ id: c.id, text: c.body }))} />
-}

@@ -1,12 +1,13 @@
 // src/pages/TodosPage/TodosPage.tsx
 import type { FC } from 'react'
 import { useMemo, useState } from 'react'
-import { useGetTodosQuery } from '../../entities/todo/api/todosApi'
+import { mockTodos } from '../../lib/mocks/todos.mock'
 
 const TodosPage: FC = () => {
   const [user, setUser] = useState<number | ''>('')
-  const { data: todos = [], isFetching } = useGetTodosQuery(user || undefined)
-  const filtered = useMemo(() => todos, [todos])
+  const filtered = useMemo(() => {
+    return user ? mockTodos.filter(t => t.userId === user) : mockTodos
+  }, [user])
 
   return (
     <div>
@@ -20,7 +21,7 @@ const TodosPage: FC = () => {
           style={{ width: 80 }}
         />
       </label>
-      {isFetching && <p>Загрузка...</p>}\n      <ul>
+      <ul>
         {filtered.map(t => (
           <li key={t.id}>
             #{t.userId}&nbsp;—&nbsp;{t.title}&nbsp;{t.completed ? '✓' : ''}

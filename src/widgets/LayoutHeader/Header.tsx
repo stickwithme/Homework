@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, type MouseEventHandler } from 'react'
 import { ThemeSwitcher } from '../../features/ThemeSwitcher/ui/ThemeSwitcher'
 import styles from './Header.module.css'
 import { NavLink } from 'react-router-dom'
