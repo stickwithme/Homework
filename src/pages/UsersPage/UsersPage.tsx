@@ -5,23 +5,23 @@ import { useUsers } from '../../features/Users/model/hooks/useUsers'
 
 export const UsersPage: FC = () => {
   const { users, loading } = useUsers()
-  const [q, setQ] = useState('')
+  const [query, setQuery] = useState('')
   const navigate = useNavigate()
 
   const filtered = useMemo(() => {
-    const s = q.trim().toLowerCase()
+    const s = query.trim().toLowerCase()
     if (!s) return users
     return users.filter(u => u.name.toLowerCase().includes(s) || u.username.toLowerCase().includes(s))
-  }, [q, users])
+  }, [query, users])
 
-  if (loading) return <div>Loading users...</div>
+  if (loading) return <p>Загрузка…</p>
 
   return (
     <div>
       <h2>Пользователи</h2>
       <input
-        value={q}
-        onChange={(e: ChangeEvent<HTMLInputElement>) => setQ(e.target.value)}
+        value={query}
+        onChange={(e: ChangeEvent<HTMLInputElement>) => setQuery(e.target.value)}
         placeholder="Поиск по имени/нику"
       />
       <ul>
@@ -34,5 +34,3 @@ export const UsersPage: FC = () => {
     </div>
   )
 }
-
-export default UsersPage

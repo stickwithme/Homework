@@ -6,7 +6,7 @@ interface UserTabsProps {
   userId: number
 }
 
-const UserTabs: FC<UserTabsProps> = ({ userId }) => {
+export const UserTabs: FC<UserTabsProps> = ({ userId }) => {
   const makeClass = ({ isActive }: { isActive: boolean }) =>
     [styles.tab, isActive ? styles.active : ''].join(' ')
 
@@ -19,4 +19,4 @@ const UserTabs: FC<UserTabsProps> = ({ userId }) => {
   )
 }
 
-export default UserTabs
+

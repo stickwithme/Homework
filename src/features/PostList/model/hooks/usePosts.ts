@@ -1,34 +1,18 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import type { Post } from '../../../../entities/post/model/types'
-import { mockPosts } from '../../../../lib/mocks/posts.mock'
+
+import { useGetPostsQuery } from '../../../../entities/post/api/postsApi'
 
 interface UsePostsParams {
   userId?: number
 }
 
 export function usePosts({ userId }: UsePostsParams = {}) {
-  const [posts, setPosts] = useState<Post[]>([])
-  const [loading, setLoading] = useState<boolean>(true)
-  const [error, setError] = useState<string | null>(null)
-
-  useEffect(() => {
-    // эмулируем загрузку (мог бы быть fetch)
-    setLoading(true)
-    try {
-      const all = mockPosts
-      setPosts(all)
-      setError(null)
-    } catch (e) {
-      setError('Не удалось получить посты')
-    } finally {
-      setLoading(false)
-    }
-  }, [])
-
+  const { data: posts = [], isLoading, isError } = useGetPostsQuery(userId)
   const filteredByUser = useMemo(() => {
     if (!userId) return posts
     return posts.filter(p => p.userId === userId)
   }, [posts, userId])
-
-  return { posts: filteredByUser, loading, error }
+  return { posts: filteredByUser, loading: isLoading, error: isError ? 'Не удалось получить посты' : null }
 }
+

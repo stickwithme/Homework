@@ -3,8 +3,8 @@ import PostList from '../../widgets/PostList/PostList'
 import { usePosts } from '../../features/PostList/model/hooks/usePosts'
 
 const PostsPage: FC = () => {
-  const { loading } = usePosts()
-  return <PostList isLoading={loading} />
+  const { loading, posts } = usePosts()
+  return <PostList isLoading={loading} posts={posts} />
 }
 
-export default PostsPage
+export { PostsPage }

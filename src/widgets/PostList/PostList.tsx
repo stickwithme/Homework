@@ -1,66 +1,43 @@
 import type { FC } from 'react'
-import { useMemo, useState, useCallback } from 'react'
-import { PostCard } from '../../entities/post/ui/PostCard/PostCard'
+import { useMemo, useState } from 'react'
 import type { Post } from '../../entities/post/model/types'
-import { mockPosts } from '../../lib/mocks/posts.mock'
-import { withLoading } from '../../shared/lib/hoc/withLoading'
+import { PostCard } from '../../entities/post/ui/PostCard/PostCard'
 import { PostLengthFilter } from '../../features/PostLengthFilter/ui/PostLengthFilter'
 import { filterByLength } from '../../features/PostLengthFilter/lib/filterByLength'
-import { Button } from '../../shared/ui/Button/Button'
-import { CommentList } from '../../widgets/CommentList/ui/CommentList'
+import { withLoading } from '../../shared/lib/hoc/withLoading'
 import '../../shared/styles/mobile.css'
 
-const PostListBase: FC<{ isLoading?: boolean; userId?: number }> = ({ userId }) => {
-  // длина заголовка
-  const [minLength, setMinLength] = useState<number>(0)
-  // поиск по заголовку
-  const [q, setQ] = useState<string>('')
-  // раскрытые комментарии по id поста
-  const [open, setOpen] = useState<Record<number, boolean>>({})
+interface PostListProps {
+  isLoading?: boolean
+  posts: Post[]
+}
 
-  const onFilterChange = useCallback((value: number) => setMinLength(value), [])
-  const onQueryChange = useCallback((value: string) => setQ(value), [])
-  const toggleComments = useCallback((id: number) => {
-    setOpen(prev => ({ ...prev, [id]: !prev[id] }))
-  }, [])
+const PostListBase: FC<PostListProps> = ({ posts }) => {
+  const [minLength, setMinLength] = useState<number>(0)
+  const [query, setQuery] = useState<string>('')
 
   const filtered = useMemo(() => {
-    const byUser = userId ? mockPosts.filter(p => p.userId === userId) : mockPosts
-    const byLen = filterByLength(byUser, minLength)
-    const s = q.trim().toLowerCase()
+    const byLen = filterByLength(posts, minLength)
+    const s = query.trim().toLowerCase()
     return s ? byLen.filter(p => p.title.toLowerCase().includes(s)) : byLen
-  }, [userId, minLength, q])
+  }, [posts, minLength, query])
+
+  const handleQueryChange = (value: string) => setQuery(value)
+  const handleMinLengthChange = (value: number) => setMinLength(value)
 
   return (
     <div className="container">
       <div className="filterBar">
-        <PostLengthFilter minLength={minLength} setMinLength={onFilterChange} />
-        {!userId && (
-          <label style={{ marginLeft: 8 }}>
-            Поиск: <input value={q} onChange={(e) => onQueryChange((e.target as HTMLInputElement).value)} placeholder="по заголовку" />
-          </label>
-        )}
+        <PostLengthFilter minLength={minLength} setMinLength={handleMinLengthChange} />
+        <label style={{ marginLeft: 8 }}>
+          Поиск: <input value={query} onChange={(e) => handleQueryChange((e.target as HTMLInputElement).value)} placeholder="по заголовку" />
+        </label>
       </div>
 
       <section id="posts" className="section">
         {filtered.map((post) => (
           <div key={post.id} style={{ marginBottom: 16 }}>
             <PostCard post={post} />
-            <div style={{ marginTop: 8 }}>
-              <Button onClick={() => toggleComments(post.id)}>
-                {open[post.id] ? 'Скрыть комментарии' : 'Комментарии'}
-              </Button>
-            </div>
-            {open[post.id] && (
-              <div style={{ marginTop: 8 }}>
-                <CommentList
-                  comments={[
-                    { id: 1, text: `Комментарий к посту #${post.id}: спасибо!` },
-                    { id: 2, text: `Полезно про: ${post.title.slice(0, 10)}...` },
-                  ]}
-                />
-              </div>
-            )}
           </div>
         ))}
       </section>

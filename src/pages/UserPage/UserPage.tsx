@@ -1,6 +1,6 @@
 import type { FC } from 'react'
 import { Outlet, useParams } from 'react-router-dom'
-import UserTabs from '../../widgets/UserTabs/UserTabs'
+import { UserTabs } from '../../widgets/UserTabs/UserTabs'
 
 export const UserPage: FC = () => {
   const { id } = useParams()
@@ -12,5 +12,3 @@ export const UserPage: FC = () => {
     </div>
   )
 }
-
-export default UserPage

@@ -1,12 +1,12 @@
-import { FC, useMemo } from 'react';
+import { FC } from 'react';
 import { useParams } from 'react-router-dom';
-import { mockAlbums } from '../../lib/mocks/albums.mock';
+import { useGetAlbumsQuery } from '../../entities/album/api/albumsApi';
 import { AlbumsList } from '../../widgets/AlbumsList/AlbumsList';
 
 export const UserAlbumsPage: FC = () => {
-  const { userId } = useParams();
-  const uid = Number(userId);
-  const albums = useMemo(() => mockAlbums.filter(a => a.userId === uid), [uid]);
+  const { id } = useParams();
+  const uid = Number(id) || 0;
+  const { data: albums = [] } = useGetAlbumsQuery(uid);
   return (
     <section>
       <h2>Albums of user #{uid}</h2>

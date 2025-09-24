@@ -1,30 +1,35 @@
-// src/pages/AlbumsPage/AlbumsPage.tsx
 import type { FC } from 'react'
-import { useMemo, useState } from 'react'
-import { mockAlbums } from '../../lib/mocks/albums.mock'
+import { useState } from 'react'
+import { useGetAlbumsQuery } from '../../entities/album/api/albumsApi'
 
 export const AlbumsPage: FC = () => {
-  const [q, setQ] = useState('')
+  const [query, setQuery] = useState('')
+  const { data: albums = [], isLoading } = useGetAlbumsQuery()
 
-  const filtered = useMemo(() => {
-    const s = q.trim().toLowerCase()
-    return s ? mockAlbums.filter(a => a.title.toLowerCase().includes(s)) : mockAlbums
-  }, [q])
+  const visible = query
+    ? albums.filter((a) =>
+        a.title.toLowerCase().includes(query.trim().toLowerCase())
+      )
+    : albums
+
+  if (isLoading) return <p>Загрузка…</p>
 
   return (
     <div>
       <h2>Альбомы</h2>
       <input
         placeholder="Поиск альбомов"
-        value={q}
-        onChange={(e) => setQ((e.target as HTMLInputElement).value)}
+        value={query}
+        onChange={(e) => setQuery((e.target as HTMLInputElement).value)}
         style={{ margin: '8px 0' }}
       />
       <ul>
-        {filtered.map(a => <li key={a.id}>#{a.userId} — {a.title}</li>)}
+        {visible.map((a) => (
+          <li key={a.id}>
+            #{a.userId} — {a.title}
+          </li>
+        ))}
       </ul>
     </div>
   )
 }
-
-export default AlbumsPage
