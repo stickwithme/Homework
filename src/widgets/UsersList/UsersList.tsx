@@ -9,7 +9,7 @@ interface UsersListProps {
   onOpenTodos: (userId: number) => void
 }
 
-const UsersList: FC<UsersListProps> = ({ users, onOpenPosts, onOpenAlbums, onOpenTodos }) => {
+export const UsersList: FC<UsersListProps> = ({ users, onOpenPosts, onOpenAlbums, onOpenTodos }) => {
   return (
     <div className={styles.grid}>
       {users.map(u => (

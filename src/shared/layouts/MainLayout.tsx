@@ -7,7 +7,7 @@ const MainLayout: React.FC = () => {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const t = setTimeout(() => setLoading(false), 800) // имитация загрузки
+    const t = setTimeout(() => setLoading(false), 800)
     return () => clearTimeout(t)
   }, [])
 
@@ -15,7 +15,7 @@ const MainLayout: React.FC = () => {
     <div className="app">
       <Header />
       <main className="main-content">
-        {/* Рендерим вложенные маршруты */}
+        {}
         <Outlet />
       </main>
       <Footer />

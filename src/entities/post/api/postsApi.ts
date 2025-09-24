@@ -13,7 +13,7 @@ export const postsApi = baseApi.injectEndpoints({
     }),
     getPostById: build.query<Post, number>({
       query: (id) => `posts/${id}`,
-      providesTags: (_r,_e,id) => [{ type: 'Post', id }]
+      providesTags: (result, error,id) => [{ type: 'Post', id }]
     }),
     addPost: build.mutation<Post, Partial<Post>>({
       query: (body) => ({ url:'posts', method:'POST', body }),
@@ -21,11 +21,11 @@ export const postsApi = baseApi.injectEndpoints({
     }),
     updatePost: build.mutation<Post, Partial<Post> & Pick<Post,'id'>>({
       query: ({id, ...patch}) => ({ url:`posts/${id}`, method:'PATCH', body: patch }),
-      invalidatesTags: (_r,_e,{id}) => [{ type:'Post', id }]
+      invalidatesTags: (result, error,{id}) => [{ type:'Post', id }]
     }),
     deletePost: build.mutation<{success:boolean; id:number}, number>({
       query: (id) => ({ url:`posts/${id}`, method:'DELETE' }),
-      invalidatesTags: (_r,_e,id) => [{ type:'Post', id }, { type:'Posts', id:'LIST' }]
+      invalidatesTags: (result, error,id) => [{ type:'Post', id }, { type:'Posts', id:'LIST' }]
     })
   }),
 })

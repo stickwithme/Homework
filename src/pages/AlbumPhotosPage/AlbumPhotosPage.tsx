@@ -6,4 +6,4 @@ const AlbumPhotosPage: FC = () => {
   return <h2>Фотографии альбома #{id}</h2>
 }
 
-export default AlbumPhotosPage
+export { AlbumPhotosPage }

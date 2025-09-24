@@ -1,5 +1,1 @@
-export interface Album {
-  id: number;
-  userId: number;
-  title: string;
-}
+export interface Album { id: number; userId: number; title: string }

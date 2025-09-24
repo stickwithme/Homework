@@ -5,7 +5,7 @@ export const commentsApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
     getCommentsByPost: build.query<Comment[], number>({
       query: (postId) => `comments?postId=${postId}`,
-      providesTags: (_r,_e,postId) => [{ type:'Comments', id: postId }],
+      providesTags: (result, error,postId) => [{ type:'Comments', id: postId }],
     })
   })
 })

@@ -33,11 +33,11 @@
 }
 
 
-/* Mobile-first enhancements */
+
 .card {
   border-radius: 14px;
   padding: 14px;
-  box-shadow: 0 4px 16px rgba(0,0,0,.06);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, .06);
   background: var(--card-bg, #fff);
 }
 
@@ -67,18 +67,29 @@
   gap: 8px;
 }
 
-.actions > * {
+.actions>* {
   flex: 1 1 auto;
 }
 
-/* Tablet and up */
+
 @media (min-width: 640px) {
-  .card { padding: 16px 18px; border-radius: 16px; }
-  .title { font-size: 20px; }
-  .actions > * { flex: 0 0 auto; }
+  .card {
+    padding: 16px 18px;
+    border-radius: 16px;
+  }
+
+  .title {
+    font-size: 20px;
+  }
+
+  .actions>* {
+    flex: 0 0 auto;
+  }
 }
 
-/* Desktop */
+
 @media (min-width: 1024px) {
-  .title { font-size: 22px; }
+  .title {
+    font-size: 22px;
+  }
 }

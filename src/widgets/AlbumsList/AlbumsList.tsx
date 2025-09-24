@@ -7,7 +7,7 @@ interface AlbumsListProps {
   onOpen: (albumId: number) => void
 }
 
-const AlbumsList: FC<AlbumsListProps> = ({ albums, onOpen }) => {
+export const AlbumsList: FC<AlbumsListProps> = ({ albums, onOpen }) => {
   return (
     <div className={styles.list}>
       {albums.map(a => (

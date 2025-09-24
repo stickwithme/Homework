@@ -1,16 +1,24 @@
 import type { FC } from 'react'
 import { useParams } from 'react-router-dom'
-import UserTabs from '../../widgets/UserTabs/UserTabs'
+import { useGetTodosQuery } from '../../entities/todo/api/todosApi'
 
-const UserTodosPage: FC = () => {
+export const UserTodosPage: FC = () => {
   const { id } = useParams()
-  const userId = Number(id) || 0
+  const uid = Number(id) || 0
+  const { data: todos = [], isLoading } = useGetTodosQuery(uid)
+
+  if (isLoading) return <p>Загрузка…</p>
+
   return (
-    <div>
-      <UserTabs userId={userId} />
-      <h2>Задачи пользователя #{userId}</h2>
-    </div>
+    <section>
+      <h2>Todos of user #{uid}</h2>
+      <ul>
+        {todos.map(t => (
+          <li key={t.id}>
+            <input type="checkbox" checked={t.completed} readOnly /> {t.title}
+          </li>
+        ))}
+      </ul>
+    </section>
   )
 }
-
-export default UserTodosPage

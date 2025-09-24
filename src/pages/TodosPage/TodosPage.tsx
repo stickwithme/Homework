@@ -1,35 +1,58 @@
-// src/pages/TodosPage/TodosPage.tsx
 import type { FC } from 'react'
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { useGetTodosQuery } from '../../entities/todo/api/todosApi'
 
-const TodosPage: FC = () => {
-  const [user, setUser] = useState<number | ''>('')
-  const { data: todos = [], isFetching } = useGetTodosQuery(user || undefined)
-  const filtered = useMemo(() => todos, [todos])
+export const TodosPage: FC = () => {
+  const [query, setQuery] = useState('')
+  const [userId, setUserId] = useState<number | ''>('')
+  const { data: todos = [], isLoading } = useGetTodosQuery()
+
+  const visible = todos.filter((t) => {
+    const okUser = userId === '' ? true : t.userId === userId
+    const okQuery = query
+      ? t.title.toLowerCase().includes(query.trim().toLowerCase())
+      : true
+    return okUser && okQuery
+  })
+
+  if (isLoading) return <p>Загрузка…</p>
 
   return (
     <div>
       <h2>Задачи</h2>
-      <label>
-        Фильтр по пользователю:&nbsp;
-        <input
-          type="number"
-          value={user as any}
-          onChange={(e) => setUser(Number((e.target as HTMLInputElement).value) || '')}
-          style={{ width: 80 }}
-        />
-      </label>
-      {isFetching && <p>Загрузка...</p>}
+      <div
+        style={{
+          display: 'flex',
+          gap: 8,
+          alignItems: 'center',
+          marginBottom: 8,
+        }}
+      >
+        <label>
+          Поиск:&nbsp;
+          <input
+            value={query}
+            onChange={(e) => setQuery((e.target as HTMLInputElement).value)}
+          />
+        </label>
+        <label>
+          userId:&nbsp;
+          <input
+            type="number"
+            value={userId}
+            onChange={(e) =>
+              setUserId(e.target.value ? Number(e.target.value) : '')
+            }
+          />
+        </label>
+      </div>
       <ul>
-        {filtered.map(t => (
+        {visible.map((t) => (
           <li key={t.id}>
-            #{t.userId}&nbsp;—&nbsp;{t.title}&nbsp;{t.completed ? '✓' : ''}
+            #{t.userId} — {t.title} {t.completed ? '✓' : ''}
           </li>
         ))}
       </ul>
     </div>
   )
 }
-
-export default TodosPage
